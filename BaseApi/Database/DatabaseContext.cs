@@ -14,6 +14,10 @@ namespace BaseApi.Database
         public DbSet<Blog> blogs { get; set; }
         #endregion
 
+        #region User
+        public DbSet<User> users { get; set; }
+        #endregion
+
 
 
         public static void UpdateDatabase(DatabaseContext context)
@@ -35,6 +39,10 @@ namespace BaseApi.Database
         {
             #region Blog
             new BlogSeeder(modelBuilder).SeedData();
+            #endregion
+
+            #region User
+            new UserSeeder(modelBuilder).SeedData();
             #endregion
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
