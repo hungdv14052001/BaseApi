@@ -15,8 +15,7 @@ namespace BaseApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AllowAnonymous]
-    public class BlogController : ControllerBase
+    public class BlogController : BaseApiController<BlogController>
     {
         private readonly BlogService _blogService;
         public BlogController(DatabaseContext databaseContext, IMapper mapper, ApiOption apiConfig)
@@ -34,8 +33,8 @@ namespace BaseApi.Controllers
         {
             try
             {
-                var res = _blogService.GetBlogs();
-                return new MessageData { Data = res };
+                //var res = _blogService.GetBlogs();
+                return new MessageData { Data = UserId };
             }
             catch (Exception ex)
             {

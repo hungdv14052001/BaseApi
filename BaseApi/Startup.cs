@@ -65,6 +65,9 @@ namespace BaseApi
                 });
             });
 
+            // get apition in appsetting
+            var apiOption = Configuration.GetSection("ApiOptions").Get<ApiOption>();
+
             // Authentication
             services.AddAuthentication(option =>
             {
@@ -80,13 +83,12 @@ namespace BaseApi
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidAudience = Configuration["JWT:ValidAudience"],
-                        ValidIssuer = Configuration["JWT:ValidIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                        ValidAudience = apiOption.ValidAudience,
+                        ValidIssuer = apiOption.ValidIssuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(apiOption.Secret))
                     };
                 });
 
-            var apiOption = Configuration.GetSection("ApiOptions").Get<ApiOption>();
             services.AddSingleton(apiOption);
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(apiOption.coreDB,
