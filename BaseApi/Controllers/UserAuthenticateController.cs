@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using BaseApi.Common;
 using BaseApi.Controllers;
 using BaseApi.Database;
 using BaseApi.Dto;
+using BaseApi.Request;
 using BaseApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,25 +18,25 @@ namespace BaseApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    public class UserAuthenticate : ControllerBase
+    public class UserAuthenticateController : ControllerBase
     {
-        private readonly BlogService _blogService;
-        public UserAuthenticate(DatabaseContext databaseContext, IMapper mapper, ApiOption apiConfig)
+        private readonly UserAuthenticateService _userAuthenticateService;
+        public UserAuthenticateController(DatabaseContext databaseContext, IMapper mapper, ApiOption apiConfig)
         {
-            _blogService = new BlogService(apiConfig, databaseContext, mapper);
+            _userAuthenticateService = new UserAuthenticateService(apiConfig, databaseContext, mapper);
         }
 
         /// <summary>
         /// Get achievement list of user
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        [Route("GetBlogs")]
-        public MessageData GetBlogs()
+        [HttpPost]
+        [Route("UserLogin")]
+        public MessageData UserLogin(UserLoginRequest userLoginRequest)
         {
             try
             {
-                var res = _blogService.GetBlogs();
+                var res = _userAuthenticateService.UserLogin(userLoginRequest);
                 return new MessageData { Data = res };
             }
             catch (Exception ex)
